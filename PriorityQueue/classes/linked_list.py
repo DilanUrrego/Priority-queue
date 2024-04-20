@@ -9,49 +9,51 @@ class LinkedList:
         self.size = 0
 
     def traverse(self):
-        node = self.head
-        while(node is not None):
-            print(node.value)
-            node = node.next
+        current_node = self.head
+        while current_node is not None:
+            print(current_node.value.__str__() + "/n")
+            current_node = current_node.next
 
-    def append(self, value, node):
-        if self.head is None:
-            self.head = node.Node(value)
-            self.size += 1
-            return
-        if node.next is None:
-            new_node = node.Node(value)
-            node.next = new_node
-            self.size += 1
-            return
-        self.append(value, node.next)
+    def __delete_at_index(self, node_to_delete: node.Node):
+        node_to_delete.prev.next = node_to_delete.next
+        node_to_delete.next.prev = node_to_delete.prev
+        node_to_delete.next = None
+        node_to_delete.prev = None
+        self.size -= 1
 
-    def prepend(self, value):
-        new_node = node.Node(value)
-        self.head = new_node
-        new_node.next = self.head
-        self.size += 1
-
-    def delete_at_index(self, del_index, node, pos=0):
-        if del_index >= self.size: return
-        elif del_index == 0:
-            self.head = self.head.next
-            return
-        elif pos == del_index - 1:
-            next_next = node.next.next
-            node.next.next = None
-            node.next = next_next
-            return
-        self.delete_at_index(del_index, node.next, pos+1)
+    def update_priority(self, name: str, new_priority: int, cur_node: node.Node):
+        pt = cur_node.value
+        if cur_node is None:
+            return None
+        elif pt.name == name:
+            pt.priority = new_priority
+            self.__delete_at_index(cur_node)
+            self.add_patient(self.head, cur_node)
+            return pt.__str__()
+        self.update_priority(name, new_priority, cur_node.next)
 
     def add_patient(self, cur_patient: node.Node, patient_to_add: patient):
         new_patient = node.Node(patient_to_add)
-
         if self.head is None:
-            pass
+            self.head = new_patient
+            self.tail = new_patient
+            self.size += 1
+            return None
         
-        if cur_patient.value.priority > patient_to_add.priority:    
+        elif cur_patient.value.priority > patient_to_add.priority:
             cur_patient.prev.next = new_patient
             cur_patient.prev = new_patient
-            #cur_patient.prev.prev.next = new_patient
-            return 
+            new_patient.next = cur_patient
+            new_patient.prev = cur_patient.prev
+            self.size += 1
+            return None
+        self.add_patient(cur_patient.next, patient_to_add)
+
+    def attend_patient(self):
+        if self.head is None:
+            return None
+        patient_to_attend = self.head.value
+        print(patient_to_attend.value.__str__())
+        self.head.next = self.head
+        self.head.prev = None
+        self.size -= 1

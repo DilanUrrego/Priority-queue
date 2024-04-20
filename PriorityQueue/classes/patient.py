@@ -4,4 +4,7 @@ class Patient:
         self.age = age
         self.description = description
         self.priority = priority
+
+    def __str__(self):
+        return f"{self.name} is {self.age} years old with a priority of {self.priority}\n Description: {self.description}"
         

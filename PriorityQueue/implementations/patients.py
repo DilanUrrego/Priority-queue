@@ -1,4 +1,4 @@
-import classes.patient as patient
+import PriorityQueue.classes.patient as patient
 
 
 patient1 = patient.Patient(
