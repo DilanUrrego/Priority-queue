@@ -1,5 +1,5 @@
-import node
-import patient
+import PriorityQueue.classes.node as node
+import PriorityQueue.classes.patient as patient
 
 
 class LinkedList:
@@ -34,17 +34,31 @@ class LinkedList:
 
     def add_patient(self, cur_patient: node.Node, patient_to_add: patient):
         new_patient = node.Node(patient_to_add)
+
         if self.head is None:
             self.head = new_patient
             self.tail = new_patient
             self.size += 1
             return None
-        
+
+        elif cur_patient is None:
+            self.tail.next = new_patient
+            new_patient.prev = self.tail
+            self.tail = new_patient
+            return
+
         elif cur_patient.value.priority > patient_to_add.priority:
+            if cur_patient is self.head:
+                self.head.prev = new_patient
+                new_patient.next = self.head
+                self.head = new_patient
+                return None
             cur_patient.prev.next = new_patient
             cur_patient.prev = new_patient
             new_patient.next = cur_patient
             new_patient.prev = cur_patient.prev
+            if new_patient.next is None:
+                self.tail = new_patient
             self.size += 1
             return None
         self.add_patient(cur_patient.next, patient_to_add)
@@ -53,7 +67,7 @@ class LinkedList:
         if self.head is None:
             return None
         patient_to_attend = self.head.value
-        print(patient_to_attend.value.__str__())
-        self.head.next = self.head
+        print(patient_to_attend.__str__())
+        self.head = self.head.next
         self.head.prev = None
         self.size -= 1

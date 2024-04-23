@@ -7,4 +7,3 @@ class Patient:
 
     def __str__(self):
         return f"{self.name} is {self.age} years old with a priority of {self.priority}\n Description: {self.description}"
-        
