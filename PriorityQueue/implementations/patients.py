@@ -60,3 +60,9 @@ patient10 = patient.Patient(
     55, 
     "Suffering from a heart attack, intense chest pain.",
     1)
+
+patient11 = patient.Patient(
+    "Ngolo Kanté",
+    28,
+    "Broke his leg during a soccer match.",
+    2)
